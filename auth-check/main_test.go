@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestPullRequestCheck(t *testing.T) {
 	type args struct {
@@ -16,7 +19,7 @@ func TestPullRequestCheck(t *testing.T) {
 		{
 			name: "Successful Collaborator Check",
 			args: args{
-				token:      "",
+				token:      os.Getenv("GITHUB_OAUTH_TOKEN"),
 				githubrepo: "jackstockley89/golangwebpage",
 				githubref:  "refs/pull/101/merge",
 			},
@@ -25,7 +28,7 @@ func TestPullRequestCheck(t *testing.T) {
 		{
 			name: "Fail Collaborator Check",
 			args: args{
-				token:      "",
+				token:      os.Getenv("GITHUB_OAUTH_TOKEN"),
 				githubrepo: "%/%",
 				githubref:  "refs/pull/001/merge",
 			},
