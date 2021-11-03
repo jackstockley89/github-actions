@@ -1,4 +1,4 @@
-name: Check Collabortor Status
+name: auth-check
 description: Check PR to see if user is part of the collaborators and can be approved. 
 
 runs:
