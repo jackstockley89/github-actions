@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -12,7 +13,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func PullRequestClose(token, githubrepo, githubref string) error {
+func PullRequestClose(token, githubrepo, githubref string) {
 	// get env token
 	// Connect to giithub
 	var client *github.Client
@@ -37,12 +38,13 @@ func PullRequestClose(token, githubrepo, githubref string) error {
 	githubrefS := strings.Split(githubref, "/")
 	branch := githubrefS[2]
 	bid, _ := strconv.Atoi(branch)
-	//prs, _, err := client.PullRequests.Edit(context.Background(), repoUser, repoName, bid)
-	//if err != nil {
-	//	return false, err
-	//}
-	//fmt.Println(prs)
-	//return prs, nil
+	state := "closed"
+
+	prs, _, err := client.PullRequests.Edit(context.Background(), repoUser, repoName, bid, &github.PullRequest{State: &state})
+	if err != nil {
+		log.Fatal()
+	}
+	fmt.Println(prs)
 }
 
 var (
@@ -53,8 +55,5 @@ var (
 
 func main() {
 	flag.Parse()
-	err := PullRequestClose(*token, *githubrepo, *githubref)
-	if err != nil {
-		log.Fatal(err)
-	}
+	PullRequestClose(*token, *githubrepo, *githubref)
 }
