@@ -1,0 +1,6 @@
+name: assignee
+description: assigns reviewer to a pull request. 
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
