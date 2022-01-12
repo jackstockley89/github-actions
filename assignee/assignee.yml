@@ -1,0 +1,6 @@
+name: close-pr
+description: closes the current pull request. 
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
