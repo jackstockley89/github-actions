@@ -1,5 +1,5 @@
-name: close-pr
-description: closes the current pull request. 
+name: assignee
+description: assigns reviewer to current pull request. 
 
 runs:
   using: 'docker'
