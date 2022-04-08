@@ -14,7 +14,7 @@ import (
 )
 
 //Used by RepoCommits function to store output
-type Repo_Commits struct {
+type Repo_Commits = struct {
 	Day   int
 	Month time.Month
 	Year  int
