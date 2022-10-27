@@ -1,0 +1,57 @@
+project_name: cloud-platform-po-linter
+builds:
+  - env:
+    - CGO_ENABLED=0
+  - id: "auth-check"
+    main: ./auth-check/auth-chek.go
+    binary: auth-check
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ldflags:
+      - -s -w
+  - id: "assignee"
+    main: ./assignee/assignee.go
+    binary: assignee
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ldflags:
+      - -s -w
+  - id: "close-pr"
+    main: ./close-pr/close-pr.go
+    binary: closr-pr
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ldflags:
+      - -s -w
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - Merge pull request
+      - Merge branch
+      - go mod tidy
+dockers:
+- 
+  image_templates: 
+  - "ministryofjustice/cloud-platform-po-linter:{{ .Tag}}"
+  - "ministryofjustice/cloud-platform-po-linter:{{ .Version}}"
+  use: buildx
+  dockerfile: Dockerfile
