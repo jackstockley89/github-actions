@@ -1,9 +1,9 @@
-project_name: cloud-platform-po-linter
+project_name: github binary create
 builds:
   - env:
     - CGO_ENABLED=0
   - id: "auth-check"
-    main: ./auth-check/auth-chek.go
+    main: ./auth-check/auth-check.go
     binary: auth-check
     goos:
       - linux
