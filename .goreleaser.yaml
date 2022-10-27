@@ -49,9 +49,27 @@ changelog:
       - Merge branch
       - go mod tidy
 dockers:
-- 
-  image_templates: 
-  - "ministryofjustice/cloud-platform-po-linter:{{ .Tag}}"
-  - "ministryofjustice/cloud-platform-po-linter:{{ .Version}}"
+-
+  ids:
+    - "auth-check"
+  image_templates:
+    - "jackstock8904/auth-check:{{ .Tag}}"
+    - "jackstock8904/auth-check:{{ .Version}}"
+  use: buildx
+  dockerfile: Dockerfile
+-
+  ids:
+    - "assignee"
+  image_templates:
+    - "jackstock8904/assignee:{{ .Tag}}"
+    - "jackstock8904/assignee:{{ .Version}}"
+  use: buildx
+  dockerfile: Dockerfile
+-
+  ids:
+    - "close-pr"
+  image_templates:
+    - "jackstock8904/close-pr:{{ .Tag}}"
+    - "jackstock8904/close-pr:{{ .Version}}"
   use: buildx
   dockerfile: Dockerfile
