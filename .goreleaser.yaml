@@ -1,11 +1,14 @@
 project_name: github-actions
+before:
+  hooks:
+    - go mod download
+
 builds:
   - env:
     - CGO_ENABLED=0
 
   - id: "auth-check"
-    dir: auth-check
-    main: ./auth-check.go
+    main: ./auth-check
     binary: auth-check
     goos:
       - linux
@@ -17,10 +20,12 @@ builds:
       - arm64
     ldflags:
       - -s -w
+    env:
+      - ID=auth-check
+      - DOCKERFILE=auth-check/Dockerfile
 
   - id: "assignee"
-    dir: assignee
-    main: .assignee.go
+    main: ./assignee
     binary: assignee
     goos:
       - linux
@@ -32,10 +37,12 @@ builds:
       - arm64
     ldflags:
       - -s -w
+    env:
+      - ID=assignee
+      - DOCKERFILE=assignee/Dockerfile
 
   - id: "close-pr"
-    dir: close-pr
-    main: ./close-pr.go
+    main: ./close-pr
     binary: close-pr
     goos:
       - linux
@@ -47,6 +54,9 @@ builds:
       - arm64
     ldflags:
       - -s -w
+    env:
+      - ID=close-pr
+      - DOCKERFILE=close-pr/Dockerfile
 
 changelog:
   sort: asc
@@ -62,6 +72,6 @@ dockers:
     - "auth-check"
     - "assignee"
     - "close-pr"
-  image_templates: [ "jackstock8904/{{ .Binary}}:{{ .Tag}}", "jackstock8904/{{ .Binary}}:{{ .Version}}" ]
-  dockerfile: '{{ .Binary }}/Dockerfile'
+  image_templates: [ "jackstock8904/{{ .Env.ID }}:{{ .Tag}}", "jackstock8904/{{ .ENV.ID }}:{{ .Version}}" ]
+  dockerfile: '{{ .Env.DOCKERFILE }}'
   use: buildx
