@@ -2,6 +2,7 @@ project_name: github binary create
 builds:
   - env:
     - CGO_ENABLED=0
+
   - id: "auth-check"
     main: ./auth-check/auth-check.go
     binary: auth-check
@@ -15,6 +16,7 @@ builds:
       - arm64
     ldflags:
       - -s -w
+
   - id: "assignee"
     main: ./assignee/assignee.go
     binary: assignee
@@ -28,9 +30,10 @@ builds:
       - arm64
     ldflags:
       - -s -w
+
   - id: "close-pr"
     main: ./close-pr/close-pr.go
-    binary: closr-pr
+    binary: close-pr
     goos:
       - linux
       - darwin
@@ -41,6 +44,7 @@ builds:
       - arm64
     ldflags:
       - -s -w
+
 changelog:
   sort: asc
   filters:
@@ -48,28 +52,13 @@ changelog:
       - Merge pull request
       - Merge branch
       - go mod tidy
+
 dockers:
 -
   ids:
     - "auth-check"
-  image_templates:
-    - "jackstock8904/auth-check:{{ .Tag}}"
-    - "jackstock8904/auth-check:{{ .Version}}"
-  use: buildx
-  dockerfile: Dockerfile
--
-  ids:
     - "assignee"
-  image_templates:
-    - "jackstock8904/assignee:{{ .Tag}}"
-    - "jackstock8904/assignee:{{ .Version}}"
-  use: buildx
-  dockerfile: Dockerfile
--
-  ids:
     - "close-pr"
-  image_templates:
-    - "jackstock8904/close-pr:{{ .Tag}}"
-    - "jackstock8904/close-pr:{{ .Version}}"
+  image_templates: [ "jackstock8904/{{ .Binary}}:{{ .Tag}}", "jackstock8904/{{ .Binary}}:{{ .Version}}" ]
+  dockerfile: '{{ .Binary }}/Dockerfile'
   use: buildx
-  dockerfile: Dockerfile
