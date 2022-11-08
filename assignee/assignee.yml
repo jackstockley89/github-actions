@@ -3,4 +3,4 @@ description: assigns reviewer to current pull request.
 
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'jackstock8904/assignee:latest'
