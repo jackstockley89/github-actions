@@ -1,10 +1,11 @@
-project_name: github binary create
+project_name: github-actions
 builds:
   - env:
     - CGO_ENABLED=0
 
   - id: "auth-check"
-    main: ./auth-check/auth-check.go
+    dir: auth-check
+    main: ./auth-check.go
     binary: auth-check
     goos:
       - linux
@@ -18,7 +19,8 @@ builds:
       - -s -w
 
   - id: "assignee"
-    main: ./assignee/assignee.go
+    dir: assignee
+    main: .assignee.go
     binary: assignee
     goos:
       - linux
@@ -32,7 +34,8 @@ builds:
       - -s -w
 
   - id: "close-pr"
-    main: ./close-pr/close-pr.go
+    dir: close-pr
+    main: ./close-pr.go
     binary: close-pr
     goos:
       - linux
