@@ -1,9 +1,6 @@
-before:
-  hooks:
-    - go mod download
+project_name: auth-check
 builds:
-  - id: "auth-check"
-    main: auth-check
+  - main: auth-check
     binary: auth-check
     goos:
       - linux
