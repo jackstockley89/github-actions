@@ -32,6 +32,6 @@ dockers:
 -
   ids:
     - "close-pr"
-  image_templates: [ "jackstock8904/{{ .Env.ID }}:{{ .Tag}}", "jackstock8904/{{ .ENV.ID }}:{{ .Version}}" ]
+  image_templates: [ "jackstock8904/{{ .Env.ID }}:{{ .Tag}}", "jackstock8904/{{ .Env.ID }}:{{ .Version}}" ]
   dockerfile: '{{ .Env.DOCKERFILE }}'
   use: buildx
