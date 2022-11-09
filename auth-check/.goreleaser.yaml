@@ -1,4 +1,10 @@
 project_name: auth-check
+env:
+  - CGO_ENABLED=0
+  - ID={{ .ProjectName }}
+  - DOCKERFILE=Dockerfile
+  - DIRECTORY=auth-check
+  - COMMAND=auth-check
 before:
   hooks:
     - go mod download
@@ -15,10 +21,7 @@ builds:
       - arm64
     ldflags:
       - -s -w
-    env:
-      - CGO_ENABLED=0
-      - ID=auth-check
-      - DOCKERFILE=Dockerfile
+    
 changelog:
   sort: asc
   filters:
@@ -27,9 +30,6 @@ changelog:
       - Merge branch
       - go mod tidy
 dockers:
--
-  ids:
-    - "auth-check"
-  image_templates: [ "jackstock8904/{{ .Env.ID }}:{{ .Tag}}", "jackstock8904/{{ .ENV.ID }}:{{ .Version}}" ]
+- image_templates: [ "jackstock8904/{{ .Env.ID }}:{{ .Tag}}", "jackstock8904/{{ .ENV.ID }}:{{ .Version}}" ]
   dockerfile: '{{ .Env.DOCKERFILE }}'
   use: buildx
