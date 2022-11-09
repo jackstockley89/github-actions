@@ -1,6 +1,9 @@
 project_name: assignee
+before:
+  hooks:
+    - go mod download
 builds:
-  - main: assignee
+  - dir: assignee
     binary: assignee
     goos:
       - linux

@@ -1,6 +1,9 @@
 project_name: close-pr
+before:
+  hooks:
+    - go mod download
 builds:
-  - main: close-pr
+  - dir: close-pr
     binary: close-pr
     goos:
       - linux
