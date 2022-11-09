@@ -1,4 +1,10 @@
 project_name: close-pr
+env:
+  - CGO_ENABLED=0
+  - ID=close-pr
+  - DOCKERFILE=Dockerfile
+  - DIRECTORY=close-pr
+  - COMMAND=close-pr
 before:
   hooks:
     - go mod download
@@ -15,10 +21,6 @@ builds:
       - arm64
     ldflags:
       - -s -w
-    env:
-      - CGO_ENABLED=0
-      - ID=close-pr
-      - DOCKERFILE=Dockerfile
 changelog:
   sort: asc
   filters:
