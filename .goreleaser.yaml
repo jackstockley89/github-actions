@@ -1,3 +1,4 @@
+project_name: github-actions
 before:
   hooks:
     - go mod download
