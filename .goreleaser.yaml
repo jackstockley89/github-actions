@@ -1,4 +1,3 @@
-project_name: github-actions
 before:
   hooks:
     - go mod download
@@ -8,7 +7,7 @@ builds:
     - CGO_ENABLED=0
 
   - id: "auth-check"
-    main: ./auth-check
+    dir: auth-check
     binary: auth-check
     goos:
       - linux
@@ -25,7 +24,7 @@ builds:
       - DOCKERFILE=auth-check/Dockerfile
 
   - id: "assignee"
-    main: ./assignee
+    dir: assignee
     binary: assignee
     goos:
       - linux
@@ -42,7 +41,7 @@ builds:
       - DOCKERFILE=assignee/Dockerfile
 
   - id: "close-pr"
-    main: ./close-pr
+    dir: close-pr
     binary: close-pr
     goos:
       - linux
