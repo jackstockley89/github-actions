@@ -5,9 +5,7 @@ before:
 builds:
   - env:
     - CGO_ENABLED=0
-
-  - id: "github-actions"
-    skip: true
+  - skip: true
 
   - id: "auth-check"
     dir: auth-check
