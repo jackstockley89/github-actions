@@ -1,0 +1,35 @@
+before:
+  hooks:
+    - go mod download
+builds:
+  - id: "close-pr"
+    main: close-pr
+    binary: close-pr
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ldflags:
+      - -s -w
+    env:
+      - CGO_ENABLED=0
+      - ID=close-pr
+      - DOCKERFILE=Dockerfile
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - Merge pull request
+      - Merge branch
+      - go mod tidy
+dockers:
+-
+  ids:
+    - "close-pr"
+  image_templates: [ "jackstock8904/{{ .Env.ID }}:{{ .Tag}}", "jackstock8904/{{ .ENV.ID }}:{{ .Version}}" ]
+  dockerfile: '{{ .Env.DOCKERFILE }}'
+  use: buildx
