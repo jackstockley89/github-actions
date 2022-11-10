@@ -2,8 +2,10 @@ FROM golang:1.19.2-alpine
 
 ARG COMMAND
 
+ENV CMD=${COMMAND}
+
 WORKDIR /go/bin
 
-COPY ${COMMAND} /go/bin
+COPY ${CMD} /go/bin
 
-CMD ["$COMMAND"]
+CMD ["${CMD}"]

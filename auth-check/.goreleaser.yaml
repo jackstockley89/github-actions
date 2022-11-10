@@ -2,7 +2,6 @@ project_name: auth-check
 env:
   - CGO_ENABLED=0
   - DOCKERFILE=Dockerfile-goreleaser
-  - DIRECTORY=auth-check
   - COMMAND=auth-check
 before:
   hooks:
