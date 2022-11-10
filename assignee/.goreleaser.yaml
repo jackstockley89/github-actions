@@ -2,8 +2,7 @@ project_name: assignee
 env:
   - CGO_ENABLED=0
   - ID=assignee
-  - DOCKERFILE=Dockerfile
-  - DIRECTORY=assignee
+  - DOCKERFILE=Dockerfile-goreleaser
   - COMMAND=assignee
 before:
   hooks:
