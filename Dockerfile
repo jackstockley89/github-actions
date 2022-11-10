@@ -9,10 +9,10 @@ ENV \
 
 WORKDIR /go/bin
 
-COPY go.mod .
-COPY go.sum .
+COPY go.mod /go/bin
+COPY go.sum /go/bin
 RUN go mod download
-COPY ./${DIRECTORY} .
+COPY ./${DIRECTORY} /go/bin
 
 RUN go build -ldflags "-s -w" .
 
