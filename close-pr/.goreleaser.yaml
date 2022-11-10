@@ -2,9 +2,8 @@ project_name: close-pr
 env:
   - CGO_ENABLED=0
   - ID=close-pr
-  - DOCKERFILE=Dockerfile
+  - DOCKERFILE=Dockerfile-goreleaser
   - DIRECTORY=close-pr
-  - COMMAND=close-pr
 before:
   hooks:
     - go mod download
