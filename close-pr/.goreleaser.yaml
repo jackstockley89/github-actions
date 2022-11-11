@@ -2,7 +2,6 @@ project_name: close-pr
 env:
   - CGO_ENABLED=0
   - DOCKERFILE=Dockerfile-goreleaser
-  - DIRECTORY=close-pr
 before:
   hooks:
     - go mod download
@@ -32,6 +31,7 @@ dockers:
   dockerfile: '{{ .Env.DOCKERFILE }}'
   use: buildx
   build_flag_templates:
+  - --build-arg=COMMAND={{ .ProjectName }}"
   - --platform=linux/amd64
   - --label=org.opencontainers.image.title={{ .ProjectName }}
   - --label=org.opencontainers.image.description={{ .ProjectName }}
@@ -46,6 +46,7 @@ dockers:
   dockerfile: '{{ .Env.DOCKERFILE }}'
   use: buildx
   build_flag_templates:
+  - --build-arg=COMMAND={{ .ProjectName }}"
   - --platform=linux/arm64
   - --label=org.opencontainers.image.title={{ .ProjectName }}
   - --label=org.opencontainers.image.description={{ .ProjectName }}
