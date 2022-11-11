@@ -1,6 +1,0 @@
-name: auth-check
-description: Check PR to see if user is part of the collaborators and can be approved. 
-
-runs:
-  using: 'docker'
-  image: 'jackstock8904/auth-check:latest'
