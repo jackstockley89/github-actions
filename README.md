@@ -2,7 +2,7 @@
 
 ## About
 --- 
-`github-actions` repository is a collection of Go scripts used to preform a task within a CI/CD pipeline 
+`github-actions` repository is a collection of Go scripts used to preform tasks within a CI/CD pipeline 
 
 ## Language Version
 ---
@@ -44,5 +44,5 @@ Workflow Example: [README](https://github.com/jackstockley89/github-actions/tree
 ## How to publish a new binary
 ---
 ```
-Within this respoistory goreleaser tool is used to create a Go binary and push a image to Docker Hub. To publish a new binary once the Pull Request is approved and merged into the `main` branch, create a new release and the github action with automatically start and publish the new binary. No changes will be needed to the workflow that is calling the image aslong as the latest image is being pulled
+Within this respoistory, the goreleaser tool is used to create a Go binary and push a image to Docker Hub. To publish a new binary once the Pull Request is approved and merged into the main branch, create a new release and the github action will automatically start and publish the new binary. No changes will be needed to the workflow that is calling the image aslong as the latest image is being pulled
 ```
