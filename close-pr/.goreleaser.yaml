@@ -70,4 +70,3 @@ announce:
   slack:
     enabled: true
     message_template: '{{ .ProjectName }} {{ .Tag }} is now live: {{ .ReleaseURL }}'
-    icon_emoji: ':golang:'
