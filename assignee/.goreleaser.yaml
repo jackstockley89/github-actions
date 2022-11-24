@@ -68,4 +68,4 @@ announce:
   slack:
     enabled: true
     message_template: '{{ .ProjectName }} {{ .Tag }} is now live: {{ .ReleaseURL }}'
-    icon_emoji: ':jake_wink:'
+    icon_emoji: 'golang'
