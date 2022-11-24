@@ -62,6 +62,7 @@ jobs:
           args: release -f auth-check/.goreleaser.yaml --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
   
   Close-PR:
     runs-on: ubuntu-latest
@@ -90,3 +91,4 @@ jobs:
           args: release -f close-pr/.goreleaser.yaml --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
