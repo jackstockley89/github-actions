@@ -6,8 +6,8 @@ before:
   hooks:
     - go mod download
 builds:
-  - dir: auth-check
-    binary: auth-check
+  - dir: version-check
+    binary: version-check
     goos:
       - linux
       - darwin
