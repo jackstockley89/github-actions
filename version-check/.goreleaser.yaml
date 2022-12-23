@@ -1,4 +1,4 @@
-project_name: auth-check
+project_name: version-check
 env:
   - CGO_ENABLED=0
   - DOCKERFILE=Dockerfile-goreleaser
