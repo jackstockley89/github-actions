@@ -63,6 +63,6 @@ func main() {
 		log.Fatal(err)
 	}
 	if t {
-		githubaction.SetOutput("Release Tag: ", output)
+		githubaction.SetOutput("release_tag", output)
 	}
 }
