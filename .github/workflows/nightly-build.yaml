@@ -1,8 +1,8 @@
 name: Nightly Build
 
 on:
-  schedule:
-    - cron: '00 01 * * *'
+  # schedule:
+  #   - cron: '00 01 * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,8 +25,22 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
 
-  docker:
+  version:
     needs: check_date
+    if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    runs-on: ubuntu-latest
+    name: Repository Version Check
+    outputs:
+      version: ${{ steps.version_check.outputs.release_tag }}
+    steps:
+      - id: version_check
+        name: Version check
+        uses: docker://jackstock8904/version-check:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    needs: [check_date, version]
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     name: Build container and push to DockerHub
     runs-on: ubuntu-latest
@@ -36,16 +50,12 @@ jobs:
         include:
           - name: assignee
             image: jackstock8904/assignee
-            build-args: DIRECTORY=assignee COMMAND=assignee
           - name: auth-check
             image: jackstock8904/auth-check
-            build-args: DIRECTORY=auth-check COMMAND=auth-check
           - name: close-pr
             image: jackstock8904/close-pr
-            build-args: DIRECTORY=close-pr COMMAND=close-pr
           - name: version-check
             image: jackstock8904/version-check
-            build-args: DIRECTORY=version-check COMMAND=version-check
     permissions:
       contents: read
       packages: write
@@ -54,14 +64,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - id: version_check
-        name: Version check
-        uses: docker://jackstock8904/version-check:latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Output
-        run: echo ${{steps.version_check.outputs.release_tag}}
+        run: echo ${{ needs.version.outputs.version }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -81,14 +85,17 @@ jobs:
         with:
           flavor: latest=false
           images: ${{ matrix.image }}
-          tags: type=semver,suffix=-nightly,pattern={{version}},value=${{ steps.version_check.outputs.release_tag }}
+          tags: type=semver,suffix=-nightly,pattern={{version}},value=${{ needs.version.outputs.version }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
+          file: Dockerfile
           tags: ${{ steps.metadata.outputs.tags }}
-          build-args: ${{ matrix.build-args}}
+          build-args: |
+            DIRECTORY=${{ matrix.name }} 
+            COMMAND=${{ matrix.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
