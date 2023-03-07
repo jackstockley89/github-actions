@@ -13,7 +13,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-// PullRequestCheck will validate that the User of the pull request is a valid Collaborator
+// versionCheck will check the latest release of a github repository
 func versionCheck(token, githubrepo string) (bool, error) {
 	// get env token
 	// Connect to giithub
