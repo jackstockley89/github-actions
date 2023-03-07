@@ -8,34 +8,24 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v38/github"
 	githubaction "github.com/sethvargo/go-githubactions"
-	"golang.org/x/oauth2"
+
+	client "github.com/jackstockley89/github-actions/github-api/client"
+	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
+)
+
+var (
+	token      = flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
+	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
+	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Reference string")
+	output     string
+	c          = client.ClientConnect(*token)
+	pri        = pullrequestinfo.PullRequestData(*githubrepo, *githubref)
 )
 
 // versionCheck will check the latest release of a github repository
 func versionCheck(token, githubrepo string) (bool, error) {
-	// get env token
-	// Connect to giithub
-	var client *github.Client
-	if token == "" {
-		client = github.NewClient(nil)
-	} else {
-		ctx := context.Background()
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		)
-		tc := oauth2.NewClient(ctx, ts)
-
-		client = github.NewClient(tc)
-	}
-
-	//repo user and repo name
-	githubrepoS := strings.Split(githubrepo, "/")
-	repoUser := githubrepoS[0]
-	repoName := githubrepoS[1]
-
-	t, _, err := client.Repositories.GetLatestRelease(context.Background(), repoUser, repoName)
+	t, _, err := c.Repositories.GetLatestRelease(context.Background(), pri.Owner, pri.Repository)
 	if err != nil {
 		return false, err
 	}
@@ -49,12 +39,6 @@ func versionCheck(token, githubrepo string) (bool, error) {
 	return true, nil
 
 }
-
-var (
-	token      = flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
-	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
-	output     string
-)
 
 func main() {
 	flag.Parse()

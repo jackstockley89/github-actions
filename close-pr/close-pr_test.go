@@ -40,7 +40,7 @@ func TestPullRequestClose(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			PullRequestClose(tt.args.token, tt.args.githubrepo, tt.args.githubref)
+			PullRequestClose()
 		})
 	}
 }

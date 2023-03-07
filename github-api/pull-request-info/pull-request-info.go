@@ -13,7 +13,7 @@ type PullRequestInfo struct {
 }
 
 // TODO: gather pull request data
-func PullRequest(githubrepo, githubref string) PullRequestInfo {
+func PullRequestData(githubrepo, githubref string) PullRequestInfo {
 	var r PullRequestInfo
 	//repo user and repo name
 	githubrepoS := strings.Split(githubrepo, "/")

@@ -7,11 +7,20 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/google/go-github/github"
-	"golang.org/x/oauth2"
+	"github.com/jackstockley89/github-actions/github-api/client"
+	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
+)
+
+var (
+	token      = flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
+	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
+	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
+	c          = client.ClientConnect(*token)
+	pri        = pullrequestinfo.PullRequestData(*githubrepo, *githubref)
+	prauth     string
 )
 
 type Collaborators []struct {
@@ -22,70 +31,30 @@ type Reviewer []struct {
 	Login string `json:"login"`
 }
 
-func CallClient(token string) *github.Client {
-	// get env token
-	// Connect to giithub
-	var client *github.Client
-	if token == "" {
-		client = github.NewClient(nil)
-	} else {
-		ctx := context.Background()
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		)
-		tc := oauth2.NewClient(ctx, ts)
-
-		client = github.NewClient(tc)
-	}
-	return client
-}
-
-func PullRequestsAuth(githubrepo, githubref string) {
-	client := CallClient(*token)
-	//repo user and repo name
-	githubrepoS := strings.Split(githubrepo, "/")
-	repoUser := githubrepoS[0]
-	repoName := githubrepoS[1]
-
-	// get pr owner
-	githubrefS := strings.Split(githubref, "/")
-	branch := githubrefS[2]
-	bid, _ := strconv.Atoi(branch)
-
-	prs, _, err := client.PullRequests.Get(context.Background(), repoUser, repoName, bid)
+func PullRequestsAuth() {
+	prs, _, err := c.PullRequests.Get(context.Background(), pri.Owner, pri.Repository, pri.Bid)
 	if err != nil {
 		log.Fatal(err)
 	}
 	prauth = prs.User.GetLogin()
 }
 
-func AssignUser(githubrepo, githubref string) {
-	client := CallClient(*token)
-	//repo user and repo name
-	githubrepoS := strings.Split(githubrepo, "/")
-	repoUser := githubrepoS[0]
-	repoName := githubrepoS[1]
-
-	// get pr owner
-	githubrefS := strings.Split(githubref, "/")
-	branch := githubrefS[2]
-	bid, _ := strconv.Atoi(branch)
-
+func AssignUser() {
 	// get Collaborators List for the given Respository
 	// As this Respository has not teams it has collect the users name to pass into the review request
-	var c Collaborators
-	h, _, err := client.Repositories.ListCollaborators(context.Background(), repoUser, repoName, &github.ListCollaboratorsOptions{})
+	var col Collaborators
+	h, _, err := c.Repositories.ListCollaborators(context.Background(), pri.Owner, pri.Repository, &github.ListCollaboratorsOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
 	j, _ := json.Marshal(h)
-	u := json.Unmarshal(j, &c)
+	u := json.Unmarshal(j, &col)
 	if u != nil {
 		log.Panicln(u)
 	}
 
 	// Taken the List of Collaborators from CollectCollabList function and breaking it down into []string that is readable by the ReviewerRequest
-	cprint := fmt.Sprintln(c)
+	cprint := fmt.Sprintln(col)
 	creplace := strings.ReplaceAll(cprint, "[", "")
 	creplace2 := strings.ReplaceAll(creplace, "{", "")
 	creplace3 := strings.ReplaceAll(creplace2, "}", "")
@@ -96,7 +65,7 @@ func AssignUser(githubrepo, githubref string) {
 	var r Reviewer
 	if prAuth != csplit[0] {
 		i := github.ReviewersRequest{Reviewers: []string{csplit[0]}}
-		prs, _, err := client.PullRequests.RequestReviewers(context.Background(), repoUser, repoName, bid, i)
+		prs, _, err := c.PullRequests.RequestReviewers(context.Background(), pri.Owner, pri.Repository, pri.Bid, i)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -108,7 +77,7 @@ func AssignUser(githubrepo, githubref string) {
 	}
 	if prAuth != csplit[1] {
 		i := github.ReviewersRequest{Reviewers: []string{csplit[1]}}
-		prs, _, err := client.PullRequests.RequestReviewers(context.Background(), repoUser, repoName, bid, i)
+		prs, _, err := c.PullRequests.RequestReviewers(context.Background(), pri.Owner, pri.Repository, pri.Bid, i)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -122,15 +91,8 @@ func AssignUser(githubrepo, githubref string) {
 	fmt.Println("Requested Reviewer:", result)
 }
 
-var (
-	prauth     string
-	token      = flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
-	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
-	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
-)
-
 func main() {
 	flag.Parse()
-	PullRequestsAuth(*githubrepo, *githubref)
-	AssignUser(*githubrepo, *githubref)
+	PullRequestsAuth()
+	AssignUser()
 }
