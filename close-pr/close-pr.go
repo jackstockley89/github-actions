@@ -28,3 +28,7 @@ func PullRequestClose() {
 	}
 	fmt.Println(prs)
 }
+
+func main() {
+	PullRequestClose()
+}
