@@ -6,50 +6,34 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 
-	"github.com/google/go-github/v38/github"
+	"github.com/jackstockley89/github-actions/github-api/client"
+	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
 	githubaction "github.com/sethvargo/go-githubactions"
-	"golang.org/x/oauth2"
 )
 
 // PullRequestCheck will validate that the User of the pull request is a valid Collaborator
-func PullRequestCheck(token, githubrepo, githubref string) (bool, error) {
-	// get env token
-	// Connect to giithub
-	var client *github.Client
-	if token == "" {
-		client = github.NewClient(nil)
-	} else {
-		ctx := context.Background()
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		)
-		tc := oauth2.NewClient(ctx, ts)
+func PullRequestCheck() (bool, error) {
+	flag.Parse()
 
-		client = github.NewClient(tc)
-	}
+	token := flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
+	githubrepo := flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
+	githubref := flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
+	c := client.ClientConnect(*token)
+	pri := pullrequestinfo.PullRequestData(*githubrepo, *githubref)
 
-	//repo user and repo name
-	githubrepoS := strings.Split(githubrepo, "/")
-	repoUser := githubrepoS[0]
-	repoName := githubrepoS[1]
-
-	// get pr owner
-	githubrefS := strings.Split(githubref, "/")
-	branch := githubrefS[2]
-	bid, _ := strconv.Atoi(branch)
-	prs, _, err := client.PullRequests.Get(context.Background(), repoUser, repoName, bid)
+	prs, _, err := c.PullRequests.Get(context.Background(), pri.Owner, pri.Repository, pri.Bid)
 	if err != nil {
 		return false, err
 	}
+
 	prarray := []string{*prs.User.Login}
 	pr := strings.Join(prarray, " ")
 	fmt.Println("Pull Request User:", pr)
 
 	// compare pr user with the repo collaborators
-	repos, _, err := client.Repositories.IsCollaborator(context.Background(), repoUser, repoName, pr)
+	repos, _, err := c.Repositories.IsCollaborator(context.Background(), pri.Owner, pri.Repository, pr)
 	if err != nil {
 		return false, err
 	}
@@ -57,15 +41,8 @@ func PullRequestCheck(token, githubrepo, githubref string) (bool, error) {
 	return repos, nil
 }
 
-var (
-	token      = flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
-	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
-	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
-)
-
 func main() {
-	flag.Parse()
-	t, err := PullRequestCheck(*token, *githubrepo, *githubref)
+	t, err := PullRequestCheck()
 	if err != nil {
 		log.Fatal(err)
 	}
