@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	token      = flag.String("token", os.Getenv("GITHUB_OAUTH_TOKEN"), "GihHub Personel token string")
+	token      = flag.String("token", os.Getenv("REPO_TOKEN"), "GihHub Personel token string")
 	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
 	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Reference string")
 	output     string
