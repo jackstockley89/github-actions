@@ -5,6 +5,10 @@ on:
     tags:
       - "*"
 
+env:
+  GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 jobs:
   Assignee:
     runs-on: ubuntu-latest
@@ -31,9 +35,6 @@ jobs:
         with:
           version: latest
           args: release -f assignee/.goreleaser.yaml --rm-dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
   
   Auth-Check:
     runs-on: ubuntu-latest
@@ -60,9 +61,6 @@ jobs:
         with:
           version: latest
           args: release -f auth-check/.goreleaser.yaml --rm-dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
   
   Close-PR:
     runs-on: ubuntu-latest
@@ -89,9 +87,6 @@ jobs:
         with:
           version: latest
           args: release -f close-pr/.goreleaser.yaml --rm-dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
   
   Version-Check:
     runs-on: ubuntu-latest
@@ -118,6 +113,3 @@ jobs:
         with:
           version: latest
           args: release -f version-check/.goreleaser.yaml --rm-dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}

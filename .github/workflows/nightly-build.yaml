@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+
 jobs:
   check_date:
     runs-on: ubuntu-latest
@@ -36,8 +39,6 @@ jobs:
       - id: version_check
         name: Version check
         uses: docker://jackstock8904/version-check:latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker:
     needs: [check_date, version]
@@ -97,5 +98,3 @@ jobs:
           build-args: |
             DIRECTORY=${{ matrix.name }} 
             COMMAND=${{ matrix.name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
