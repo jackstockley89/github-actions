@@ -87,6 +87,7 @@ jobs:
           flavor: latest=false
           images: ${{ matrix.image }}
           tags: type=semver,suffix=-nightly,pattern={{version}},value=${{ needs.version.outputs.version }}
+          github-token: ${{ secrets.REPO_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
