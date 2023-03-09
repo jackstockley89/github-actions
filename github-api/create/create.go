@@ -4,54 +4,51 @@ import (
 	"context"
 	"log"
 
-	client "github.com/jackstockley89/github-actions/github-api/client"
-	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
-
 	"github.com/google/go-github/github"
+	client "github.com/jackstockley89/github-actions/github-api/client"
 )
 
 var (
-	token      string
-	githubrepo string
-	githubref  string
-	c          = client.ClientConnect(token)
-	pri        = pullrequestinfo.PullRequestData(githubrepo, githubref)
+	token string
+	c     = client.ClientConnect(token)
 )
 
 // CreateComment will create a comment on the pull request
-func CreateComment(token, githubrepo, githubref string) {
-	// connect to github
-	// create comment
+func CreateComment(owner, repository, token, body string, bid int) {
+	// create comment on pull request
 	comment := &github.PullRequestComment{
-		Body: github.String("This is a test comment"),
+		Body: github.String(body),
 	}
-	_, _, err := c.PullRequests.CreateComment(context.Background(), pri.Owner, pri.Repository, pri.Bid, comment)
+	_, _, err := c.PullRequests.CreateComment(context.Background(), owner, repository, bid, comment)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // CreateReview will create a review on the pull request
-func CreateReview(token, githubrepo, githubref string) {
-	// connect to github
-	// create review
+func CreateReview(owner, repository, token, body string, bid int) {
+	// get commit id
+	commitID := getcommitid.getCommitId(owner, repository, token, bid)
+	// create review comment on pull request
 	review := &github.PullRequestReviewRequest{
-		Body: github.String("This is a test review"),
+		CommitID: commitID,
+		Body:     github.String(body),
+		Event:    github.String("COMMENT"),
 	}
-	_, _, err := c.PullRequests.CreateReview(context.Background(), pri.Owner, pri.Repository, pri.Bid, review)
+	_, _, err := c.PullRequests.CreateReview(context.Background(), owner, repository, bid, review)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // CreateIssue will create an issue in a repository
-func CreateIssue(token, githubrepo, githubref string) {
-	// connect to github
+func CreateIssue(owner, repository, title, body string) {
 	// create issue
 	issue := &github.IssueRequest{
-		Title: github.String("This is a test issue"),
+		Title: github.String(title),
+		Body:  github.String(body),
 	}
-	_, _, err := c.Issues.Create(context.Background(), pri.Owner, pri.Repository, issue)
+	_, _, err := c.Issues.Create(context.Background(), owner, repository, issue)
 	if err != nil {
 		log.Fatal(err)
 	}
