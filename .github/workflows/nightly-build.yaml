@@ -49,8 +49,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: assignee
-            image: jackstock8904/assignee
+          - name: request-review
+            image: jackstock8904/request-review
           - name: auth-check
             image: jackstock8904/auth-check
           - name: close-pr
