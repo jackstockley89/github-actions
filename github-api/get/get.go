@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/google/go-github/github"
 	client "github.com/jackstockley89/github-actions/github-api/client"
 	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
 )
@@ -12,6 +13,7 @@ var (
 	pr *PullRequestOutputData
 )
 
+// PullRequestOutputData is a struct to hold the data for a pull request to be used in other functions and packages
 type PullRequestOutputData struct {
 	ID int64
 	Title,
@@ -24,6 +26,11 @@ type PullRequestOutputData struct {
 	Repository string
 	Number,
 	Commits int
+}
+
+// Collaborators is a struct to hold the data for a repository collaborators to be used in other functions and packages
+type Collaborators struct {
+	Collaborators []string
 }
 
 // GetCommitID will get the commit id for a pull request
@@ -52,4 +59,24 @@ func GetPullRequestData(githubrepo, githubref, token string) *PullRequestOutputD
 	}
 
 	return pr
+}
+
+// GetCollaborators will get a list of collaborators for a repository
+func GetCollaborators(owner, repository, token string) *Collaborators {
+	c := client.ClientConnect(token)
+	col := &Collaborators{}
+	// get repository collaborators
+	options := &github.ListCollaboratorsOptions{
+		ListOptions: github.ListOptions{PerPage: 10},
+	}
+	collaborators, _, err := c.Repositories.ListCollaborators(context.Background(), owner, repository, options)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// assign collaborators to a struct
+	for _, collaborator := range collaborators {
+		col.Collaborators = append(col.Collaborators, *collaborator.Login)
+	}
+	return col
 }

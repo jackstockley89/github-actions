@@ -17,28 +17,8 @@ var (
 	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
 	c          = client.ClientConnect(*token)
 	g          = get.GetPullRequestData(*githubrepo, *githubref, *token)
-	col        Collaborators
+	col        = get.GetCollaborators(g.Owner, g.Repository, *token)
 )
-
-type Collaborators struct {
-	Collaborators []string
-}
-
-func getCollaborators() {
-	// get repository collaborators
-	options := &github.ListCollaboratorsOptions{
-		ListOptions: github.ListOptions{PerPage: 10},
-	}
-	collaborators, _, err := c.Repositories.ListCollaborators(context.Background(), g.Owner, g.Repository, options)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// assign collaborators to a struct
-	for _, collaborator := range collaborators {
-		col.Collaborators = append(col.Collaborators, *collaborator.Login)
-	}
-}
 
 func assignReviewers() {
 	// assign reviewers if they are collaborators and not the PR author
@@ -60,6 +40,5 @@ func assignReviewers() {
 
 func main() {
 	flag.Parse()
-	getCollaborators()
 	assignReviewers()
 }
