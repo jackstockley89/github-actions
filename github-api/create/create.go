@@ -14,7 +14,7 @@ var (
 )
 
 // CreateComment will create a comment on the pull request
-func CreateComment(owner, repository, token, body string, bid int) {
+func CreateComment(token, owner, repository, body string, bid int) {
 	// create comment on pull request
 	comment := &github.PullRequestComment{
 		Body: github.String(body),
@@ -26,19 +26,14 @@ func CreateComment(owner, repository, token, body string, bid int) {
 }
 
 // CreateReview will create a review on the pull request
-func CreateReview(owner, repository, token, body string, bid int) {
-	// get commit id
-	commitID := getcommitid.getCommitId(owner, repository, token, bid)
-	// create review comment on pull request
+func CreateReview(token, owner, repository, body string, bid int) (bool, error) {
+	//create review comment on pull request
 	review := &github.PullRequestReviewRequest{
-		CommitID: commitID,
-		Body:     github.String(body),
-		Event:    github.String("COMMENT"),
+		Body:  github.String(body),
+		Event: github.String("COMMENT"),
 	}
-	_, _, err := c.PullRequests.CreateReview(context.Background(), owner, repository, bid, review)
-	if err != nil {
-		log.Fatal(err)
-	}
+	c.PullRequests.CreateReview(context.Background(), owner, repository, bid, review)
+	return true, nil
 }
 
 // CreateIssue will create an issue in a repository

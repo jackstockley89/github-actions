@@ -6,8 +6,8 @@ before:
   hooks:
     - go mod download
 builds:
-  - dir: assignee
-    binary: assignee
+  - dir: request-review
+    binary: requestreview
     goos:
       - linux
       - darwin
