@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/go-github/github"
 	client "github.com/jackstockley89/github-actions/github-api/client"
-	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
+	get "github.com/jackstockley89/github-actions/github-api/get"
 )
 
 func PullRequestClose() {
@@ -19,10 +19,10 @@ func PullRequestClose() {
 	githubrepo := flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
 	githubref := flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
 	c := client.ClientConnect(*token)
-	pri := pullrequestinfo.PullRequestData(*githubrepo, *githubref)
+	g := get.GetPullRequestData(*githubrepo, *githubref, *token)
 	state := &github.PullRequest{State: github.String("closed")}
 
-	prs, _, err := c.PullRequests.Edit(context.Background(), pri.Owner, pri.Repository, pri.Bid, state)
+	prs, _, err := c.PullRequests.Edit(context.Background(), g.Owner, g.Repository, g.Number, state)
 	if err != nil {
 		log.Fatal()
 	}

@@ -6,15 +6,15 @@ import (
 )
 
 // Return values from pullRequestInfo
-type PullRequestInfo struct {
+type PullRequestInputData struct {
 	Owner,
 	Repository string
 	Bid int
 }
 
 // TODO: gather pull request data
-func PullRequestData(githubrepo, githubref string) PullRequestInfo {
-	var r PullRequestInfo
+func PullRequestData(githubrepo, githubref string) PullRequestInputData {
+	var r PullRequestInputData
 	//repo user and repo name
 	githubrepoS := strings.Split(githubrepo, "/")
 	r.Owner = githubrepoS[0]
