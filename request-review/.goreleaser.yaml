@@ -1,4 +1,4 @@
-project_name: assignee
+project_name: request-review
 env:
   - CGO_ENABLED=0
   - DOCKERFILE=Dockerfile-goreleaser
