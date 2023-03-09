@@ -6,11 +6,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	client "github.com/jackstockley89/github-actions/github-api/client"
-	createcomment "github.com/jackstockley89/github-actions/github-api/create"
-	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
+	get "github.com/jackstockley89/github-actions/github-api/get"
+	"github.com/sethvargo/go-githubactions"
 )
 
 var (
@@ -18,53 +17,38 @@ var (
 	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
 	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
 	c          = client.ClientConnect(*token)
-	pri        = pullrequestinfo.PullRequestData(*githubrepo, *githubref)
-	body       string
+	g          = get.GetPullRequestData(*githubrepo, *githubref, *token)
 )
 
-// PullRequestCheck will validate that the User of the pull request is a valid Collaborator
-func pullRequestCheck() (string, error) {
-	prs, _, err := c.PullRequests.Get(context.Background(), pri.Owner, pri.Repository, pri.Bid)
-	if err != nil {
-		return "", err
+func collaboratorCheck() (bool, error) {
+	// get pull request
+	pr := g.User
+	if pr == "" {
+		return false, fmt.Errorf("no pull request user found")
 	}
-
-	prarray := []string{*prs.User.Login}
-	pr := strings.Join(prarray, " ")
 	fmt.Println("Pull Request User:", pr)
-
-	return pr, nil
-}
-
-func collaboratorCheck(pr string) (bool, error) {
 	// compare pr user with the repo collaborators
-	collab, _, err := c.Repositories.IsCollaborator(context.Background(), pri.Owner, pri.Repository, pr)
+	collab, _, err := c.Repositories.IsCollaborator(context.Background(), g.Owner, g.Repository, pr)
 	if err != nil {
 		return false, err
 	}
-	body = fmt.Sprintln("Collaborator Status:", collab)
+	fmt.Println("Collaborator Status:", collab)
 	return collab, nil
 }
 
-func pullRequestComment(collab bool) {
-	if !collab {
-		fmt.Println("User is not a collaborator")
-		createcomment.CreateReview(pri.Owner, pri.Repository, *token, body, pri.Bid)
-	} else {
-		fmt.Println("User is a collaborator")
-		createcomment.CreateReview(pri.Owner, pri.Repository, *token, body, pri.Bid)
-	}
-}
-
 func main() {
+	var body string
 	flag.Parse()
-	pr, err := pullRequestCheck()
+	collab, err := collaboratorCheck()
 	if err != nil {
 		log.Fatal(err)
 	}
-	collab, err := collaboratorCheck(pr)
-	if err != nil {
-		log.Fatal(err)
+	if collab {
+		// create review on pull request
+		body = fmt.Sprintf("Known collaborator %s", g.User)
+	} else {
+		// create comment on pull request
+		body = fmt.Sprintf("Unknown collaborator %s", g.User)
 	}
-	pullRequestComment(collab)
+	githubactions.New().SetOutput("review", body)
 }
