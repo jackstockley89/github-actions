@@ -5,7 +5,9 @@ ARG \
     COMMAND
 ENV \
     CGO_ENABLED=0 \
-    GOOS=linux
+    GOOS=linux \
+    COMMAND=${COMMAND} \
+    DIRECTORY=${DIRECTORY}
 
 WORKDIR /go/bin
 
@@ -17,4 +19,4 @@ COPY ./${DIRECTORY} /go/bin
 
 RUN go build -ldflags "-s -w" .
 
-CMD ["$COMMAND"]
+CMD ["sh", "-c", "${COMMAND}"]
