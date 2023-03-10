@@ -17,6 +17,6 @@ COPY go.sum /go/bin
 RUN go mod download
 COPY ./${DIRECTORY} /go/bin
 
-RUN go build -ldflags "-s -w" .
+RUN go build -ldflags "-s -w" -o ${COMMAND} ./${DIRECTORY}
 
 CMD ["sh", "-c", "${COMMAND}"]
