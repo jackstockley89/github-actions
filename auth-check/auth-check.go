@@ -46,9 +46,11 @@ func main() {
 	if collab {
 		// create review on pull request
 		body = fmt.Sprintf("Known collaborator %s", g.User)
+		githubactions.New().SetOutput("review", "true")
 	} else {
 		// create comment on pull request
 		body = fmt.Sprintf("Unknown collaborator %s", g.User)
+		githubactions.New().SetOutput("review", "false")
 	}
-	githubactions.New().SetOutput("review", body)
+
 }
