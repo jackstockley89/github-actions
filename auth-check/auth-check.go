@@ -37,7 +37,6 @@ func collaboratorCheck() (bool, error) {
 }
 
 func main() {
-	var body string
 	flag.Parse()
 	collab, err := collaboratorCheck()
 	if err != nil {
@@ -45,11 +44,11 @@ func main() {
 	}
 	if collab {
 		// create review on pull request
-		body = fmt.Sprintf("Known collaborator %s", g.User)
+		fmt.Printf("Known collaborator %s", g.User)
 		githubactions.New().SetOutput("review", "true")
 	} else {
 		// create comment on pull request
-		body = fmt.Sprintf("Unknown collaborator %s", g.User)
+		fmt.Printf("Unknown collaborator %s", g.User)
 		githubactions.New().SetOutput("review", "false")
 	}
 
