@@ -1,11 +1,13 @@
 FROM golang:1.19.2-alpine
 
-ARG COMMAND
+ARG COMMAND \
+    DIRECTORY
 
 ENV binary $COMMAND
 
 WORKDIR /go/bin
 
-COPY ${COMMAND} /go/bin
+COPY ${DIRECTORY}/lib /go/bin/lib
+COPY ${DIRECTORY}/${COMMAND} /go/bin
 
 CMD ["sh", "-c", "${binary}"]

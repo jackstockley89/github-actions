@@ -50,12 +50,16 @@ jobs:
       matrix:
         include:
           - name: request-review
+            directory: github
             image: jackstock8904/request-review
           - name: auth-check
+            directory: github
             image: jackstock8904/auth-check
           - name: close-pr
+            directory: github
             image: jackstock8904/close-pr
           - name: version-check
+            directory: github
             image: jackstock8904/version-check
     permissions:
       contents: read
@@ -97,5 +101,5 @@ jobs:
           file: Dockerfile
           tags: ${{ steps.metadata.outputs.tags }}
           build-args: |
-            DIRECTORY=${{ matrix.name }} 
+            DIRECTORY=${{ matrix.directory }} 
             COMMAND=${{ matrix.name }}
