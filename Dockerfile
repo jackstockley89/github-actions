@@ -18,7 +18,7 @@ COPY ${DIRECTORY}/go.mod /go/bin/${DIRECTORY}
 COPY ${DIRECTORY}/go.sum /go/bin/${DIRECTORY}
 RUN go mod download
 
-COPY ${DIRECTORY}/${COMMAND} /go/bin
+COPY ${DIRECTORY}/${COMMAND} /go/bin/${DIRECTORY}
 
 RUN go build -ldflags "-s -w" -o ${COMMAND} .
 
@@ -32,6 +32,6 @@ ENV \
 
 WORKDIR /go/bin
 
-COPY --from=build /go/bin/${COMMAND} /go/bin
+COPY --from=build /go/bin/${DIRECTORY}/${COMMAND} /go/bin
 
 CMD ["sh", "-c", "${COMMAND}"]
