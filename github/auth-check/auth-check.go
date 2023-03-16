@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	lib "github.com/jackstockley89/github-actions/github/lib"
+	"github.com/jackstockley89/github-actions/github/lib"
 	"github.com/sethvargo/go-githubactions"
 )
 

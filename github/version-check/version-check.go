@@ -8,8 +8,9 @@ import (
 	"os"
 	"strings"
 
-	lib "github.com/jackstockley89/github-actions/github/lib"
 	githubaction "github.com/sethvargo/go-githubactions"
+
+	"github.com/jackstockley89/github-actions/github/lib"
 )
 
 var (
