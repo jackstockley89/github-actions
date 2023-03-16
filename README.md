@@ -16,11 +16,11 @@
 
 ## Script Index
 --- 
-![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/assignee?label=assignee%20docker%20pulls%20&style=for-the-badge)
+![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/request-review?label=request-review%20docker%20pulls%20&style=for-the-badge)
 
 When called this action will assign a github user to a pull request if they are a Collaborator
 
-Directory Link: [assignee](https://github.com/jackstockley89/github-actions/tree/main/assignee)
+Directory Link: [request-review](https://github.com/jackstockley89/github-actions/tree/main/request-review)
 
 Workflow Example: [README](https://github.com/jackstockley89/github-actions/tree/main/assignee/README.md)
 
