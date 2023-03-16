@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/google/go-github/github"
-	"github.com/jackstockley89/github-actions/github/lib"
+	lib "github.com/jackstockley89/github-actions/github/lib"
 )
 
 func PullRequestClose() {

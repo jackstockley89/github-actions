@@ -13,11 +13,12 @@ WORKDIR /go/bin
 
 RUN apk add --no-cache git
 
-RUN go get -u github.com/jackstockley89/github-actions/${DIRECTORY}/lib
-
+COPY ${DIRECTORY}/lib /go/bin/lib
 COPY go.mod /go/bin
 COPY go.sum /go/bin
 RUN go mod download
+RUN go install github.com/jackstockley89/github-actions/${DIRECTORY}/lib@latest
+
 COPY ${DIRECTORY}/${COMMAND} /go/bin
 
 RUN go build -ldflags "-s -w" -o ${COMMAND} .
