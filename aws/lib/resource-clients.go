@@ -7,8 +7,10 @@ import (
 )
 
 // ResourceClientS3 returns the S3 client
-func ResourceClientS3() *s3.Client {
-	awsCfg := Localstack()
+func ResourceClientS3(local bool) *s3.Client {
+	if local {
+		awsCfg := Localstack()
+	}
 
 	// Create the resource client
 	client := s3.NewFromConfig(awsCfg, func(o *s3.Options) {
@@ -19,8 +21,10 @@ func ResourceClientS3() *s3.Client {
 }
 
 // ResourceClientEC2 returns the EC2 client
-func ResourceClientEC2() *ec2.Client {
-	awsCfg := Localstack()
+func ResourceClientEC2(local bool) *ec2.Client {
+	if local {
+		awsCfg := Localstack()
+	}
 
 	// Create the resource client
 	client := ec2.NewFromConfig(awsCfg)
@@ -29,8 +33,10 @@ func ResourceClientEC2() *ec2.Client {
 }
 
 // ResourceClientEKS returns the eks client
-func ResourceClientEKS() *eks.Client {
-	awsCfg := Localstack()
+func ResourceClientEKS(local bool) *eks.Client {
+	if local {
+		awsCfg := Localstack()
+	}
 
 	// Create the resource client
 	client := eks.NewFromConfig(awsCfg)
