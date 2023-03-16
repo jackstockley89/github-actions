@@ -17,7 +17,6 @@ COPY ${DIRECTORY}/lib /go/bin/lib
 COPY go.mod /go/bin
 COPY go.sum /go/bin
 RUN go mod download
-RUN go install github.com/jackstockley89/github-actions/${DIRECTORY}/lib@latest
 
 COPY ${DIRECTORY}/${COMMAND} /go/bin
 
