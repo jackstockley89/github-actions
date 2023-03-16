@@ -7,7 +7,7 @@ ENV binary $COMMAND
 
 WORKDIR /go/bin
 
-COPY ${DIRECTORY}/lib /go/bin/lib
+COPY lib/${DIRECTORY} /go/bin/lib
 COPY ${DIRECTORY}/${COMMAND} /go/bin
 
 CMD ["sh", "-c", "${binary}"]

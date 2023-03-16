@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go/aws"
-	ls "github.com/jackstockley89/github-actions/aws/lib"
+	ls "github.com/jackstockley89/github-actions/lib/aws"
 )
 
 // getBucket returns the bucket name
