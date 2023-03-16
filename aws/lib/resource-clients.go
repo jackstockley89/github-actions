@@ -1,15 +1,20 @@
 package lib
 
 import (
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
+var (
+	awsCfg aws.Config
+)
+
 // ResourceClientS3 returns the S3 client
 func ResourceClientS3(local bool) *s3.Client {
 	if local {
-		awsCfg := Localstack()
+		awsCfg = Localstack()
 	}
 
 	// Create the resource client
@@ -23,7 +28,7 @@ func ResourceClientS3(local bool) *s3.Client {
 // ResourceClientEC2 returns the EC2 client
 func ResourceClientEC2(local bool) *ec2.Client {
 	if local {
-		awsCfg := Localstack()
+		awsCfg = Localstack()
 	}
 
 	// Create the resource client
@@ -35,7 +40,7 @@ func ResourceClientEC2(local bool) *ec2.Client {
 // ResourceClientEKS returns the eks client
 func ResourceClientEKS(local bool) *eks.Client {
 	if local {
-		awsCfg := Localstack()
+		awsCfg = Localstack()
 	}
 
 	// Create the resource client
