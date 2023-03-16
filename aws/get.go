@@ -10,9 +10,9 @@ import (
 )
 
 // getBucket returns the bucket name
-func GetBucket(name, key string) (string, error) {
+func GetBucket(name, key string) (*s3.GetObjectOutput, error) {
 
-	client := ls.ResourceClientS3()
+	client := ls.ResourceClientS3(true)
 
 	params := &s3.GetObjectInput{
 		Bucket: aws.String(name),
@@ -30,9 +30,9 @@ func GetBucket(name, key string) (string, error) {
 }
 
 // GetEKS returns the EKS cluster name
-func GetEKS(name, key string) (string, error) {
+func GetEKS(name, key string) (*eks.DescribeClusterOutput, error) {
 
-	client := ls.ResourceClientEKS()
+	client := ls.ResourceClientEKS(true)
 
 	params := &eks.DescribeClusterInput{
 		Name: aws.String(name),

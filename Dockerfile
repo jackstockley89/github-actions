@@ -14,10 +14,9 @@ WORKDIR /go/bin
 RUN apk add --no-cache git
 
 COPY ${DIRECTORY}/lib /go/bin/lib
-COPY go.mod /go/bin
-COPY go.sum /go/bin
+COPY ${DIRECTORY}/go.mod /go/bin
+COPY ${DIRECTORY}/go.sum /go/bin
 RUN go mod download
-RUN go get github.com/jackstockley89/github-actions/${DIRECTORY}/lib
 
 COPY ${DIRECTORY}/${COMMAND} /go/bin
 
