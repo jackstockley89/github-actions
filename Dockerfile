@@ -1,4 +1,4 @@
-FROM golang:1.19.2-alpine as build
+FROM golang:1.19.2-alpine
 
 ARG \
     DIRECTORY \
@@ -11,27 +11,12 @@ ENV \
 
 WORKDIR /go/bin
 
-RUN apk add --no-cache git
-
-COPY ${DIRECTORY}/lib /go/bin/lib
-COPY ${DIRECTORY}/go.mod /go/bin
-COPY ${DIRECTORY}/go.sum /go/bin
+COPY ./github-api /go/bin/github-api
+COPY go.mod /go/bin
+COPY go.sum /go/bin
 RUN go mod download
+COPY ./${DIRECTORY} /go/bin
 
-COPY ${DIRECTORY}/${COMMAND} /go/bin
-
-RUN go build -ldflags "-s -w" -o ${COMMAND} .
-
-FROM golang:1.19.2-alpine
-
-ARG \
-    DIRECTORY \
-    COMMAND
-ENV \
-    COMMAND=${COMMAND}
-
-WORKDIR /go/bin
-
-COPY --from=build /go/bin/${COMMAND} /go/bin
+RUN go build -ldflags "-s -w" -o ${COMMAND} . 
 
 CMD ["sh", "-c", "${COMMAND}"]

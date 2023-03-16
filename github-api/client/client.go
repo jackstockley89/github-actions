@@ -1,15 +1,10 @@
-package lib
+package client
 
 import (
 	"context"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-)
-
-var (
-	ctx    = context.Background()
-	client *github.Client
 )
 
 // clientConnect Takens a token and uses this to establish a connection to github
