@@ -6,13 +6,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go/aws"
-	resource_client "github.com/github-actions/aws/aws-api/resource-client"
+	ls "github.com/github-actions/aws/lib/localstack"
 )
 
 // getBucket returns the bucket name
 func GetBucket(name, key string) (string, error) {
 
-	client := resource_client.ResourceClientS3()
+	client := ls.ResourceClientS3()
 
 	params := &s3.GetObjectInput{
 		Bucket: aws.String(name),
@@ -32,7 +32,7 @@ func GetBucket(name, key string) (string, error) {
 // GetEKS returns the EKS cluster name
 func GetEKS(name, key string) (string, error) {
 
-	client := resource_client.ResourceClientEKS()
+	client := ls.ResourceClientEKS()
 
 	params := &eks.DescribeClusterInput{
 		Name: aws.String(name),
