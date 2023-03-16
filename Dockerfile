@@ -9,13 +9,13 @@ ENV \
     COMMAND=${COMMAND} \
     DIRECTORY=${DIRECTORY}
 
-WORKDIR /go/bin
+WORKDIR /go/bin/${DIRECTORY}
 
 RUN apk add --no-cache git
 
-COPY ${DIRECTORY}/lib /go/bin/lib
-COPY ${DIRECTORY}/go.mod /go/bin
-COPY ${DIRECTORY}/go.sum /go/bin
+COPY ${DIRECTORY}/lib /go/bin/${DIRECTORY}/lib
+COPY ${DIRECTORY}/go.mod /go/bin/${DIRECTORY}
+COPY ${DIRECTORY}/go.sum /go/bin/${DIRECTORY}
 RUN go mod download
 
 COPY ${DIRECTORY}/${COMMAND} /go/bin

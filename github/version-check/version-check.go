@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	lib "github.com/jackstockley89/github-actions/github/lib"
+	"github.com/jackstockley89/github-actions/github/lib"
 	githubaction "github.com/sethvargo/go-githubactions"
 )
 

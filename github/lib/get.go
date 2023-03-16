@@ -31,10 +31,10 @@ type Collaborators struct {
 	Collaborators []string
 }
 
-// GetCommitID will get the commit id for a pull request
+// GetPullRequestData will get the data for a pull request and return a struct
 func GetPullRequestData(githubrepo, githubref, token string) *PullRequestOutputData {
 	pri := PullRequestData(githubrepo, githubref)
-	// get commit id for pull request
+	// get pull request data from github api
 	prs, _, err := client.PullRequests.Get(context.Background(), pri.Owner, pri.Repository, pri.Bid)
 	if err != nil {
 		log.Fatal(err)
