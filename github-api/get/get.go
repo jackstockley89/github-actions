@@ -1,10 +1,12 @@
-package lib
+package get
 
 import (
 	"context"
 	"log"
 
 	"github.com/google/go-github/github"
+	client "github.com/jackstockley89/github-actions/github-api/client"
+	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
 )
 
 var (
@@ -33,9 +35,10 @@ type Collaborators struct {
 
 // GetCommitID will get the commit id for a pull request
 func GetPullRequestData(githubrepo, githubref, token string) *PullRequestOutputData {
-	pri := PullRequestData(githubrepo, githubref)
+	c := client.ClientConnect(token)
+	pri := pullrequestinfo.PullRequestData(githubrepo, githubref)
 	// get commit id for pull request
-	prs, _, err := client.PullRequests.Get(context.Background(), pri.Owner, pri.Repository, pri.Bid)
+	prs, _, err := c.PullRequests.Get(context.Background(), pri.Owner, pri.Repository, pri.Bid)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,12 +63,13 @@ func GetPullRequestData(githubrepo, githubref, token string) *PullRequestOutputD
 
 // GetCollaborators will get a list of collaborators for a repository
 func GetCollaborators(owner, repository, token string) *Collaborators {
+	c := client.ClientConnect(token)
 	col := &Collaborators{}
 	// get repository collaborators
 	options := &github.ListCollaboratorsOptions{
 		ListOptions: github.ListOptions{PerPage: 10},
 	}
-	collaborators, _, err := client.Repositories.ListCollaborators(context.Background(), owner, repository, options)
+	collaborators, _, err := c.Repositories.ListCollaborators(context.Background(), owner, repository, options)
 	if err != nil {
 		log.Fatal(err)
 	}

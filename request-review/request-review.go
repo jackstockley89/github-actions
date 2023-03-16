@@ -7,16 +7,17 @@ import (
 	"os"
 
 	"github.com/google/go-github/github"
-	lib "github.com/jackstockley89/github-actions/github/lib"
+	client "github.com/jackstockley89/github-actions/github-api/client"
+	get "github.com/jackstockley89/github-actions/github-api/get"
 )
 
 var (
 	token      = flag.String("token", os.Getenv("GITHUB_TOKEN"), "GihHub Personel token string")
 	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
 	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Respository PR ref string")
-	c          = lib.ClientConnect(*token)
-	g          = lib.GetPullRequestData(*githubrepo, *githubref, *token)
-	col        = lib.GetCollaborators(g.Owner, g.Repository, *token)
+	c          = client.ClientConnect(*token)
+	g          = get.GetPullRequestData(*githubrepo, *githubref, *token)
+	col        = get.GetCollaborators(g.Owner, g.Repository, *token)
 )
 
 func assignReviewers() {
