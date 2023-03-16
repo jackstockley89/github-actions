@@ -22,7 +22,7 @@ COPY ${DIRECTORY}/${COMMAND} /go/bin
 
 RUN go build -ldflags "-s -w" -o ${COMMAND} .
 
-FROM alpine:3.14.2
+FROM golang:1.19.2-alpine
 
 ARG \
     DIRECTORY \
