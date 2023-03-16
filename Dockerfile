@@ -13,6 +13,7 @@ WORKDIR /go/bin
 
 COPY go.mod /go/bin
 COPY go.sum /go/bin
+RUN go get github.com/jackstockley89/github-actions/${DIRECTORY}/lib
 RUN go mod download
 COPY ${DIRECTORY}/${COMMAND} /go/bin
 
