@@ -8,10 +8,8 @@ import (
 	"os"
 	"strings"
 
+	lib "github.com/jackstockley89/github-actions/github/lib"
 	githubaction "github.com/sethvargo/go-githubactions"
-
-	client "github.com/jackstockley89/github-actions/github-api/client"
-	pullrequestinfo "github.com/jackstockley89/github-actions/github-api/pull-request-info"
 )
 
 var (
@@ -19,8 +17,8 @@ var (
 	githubrepo = flag.String("githubrepo", os.Getenv("GITHUB_REPOSITORY"), "Github Repository string")
 	githubref  = flag.String("githubref", os.Getenv("GITHUB_REF"), "Github Reference string")
 	output     string
-	c          = client.ClientConnect(*token)
-	pri        = pullrequestinfo.PullRequestData(*githubrepo, *githubref)
+	c          = lib.ClientConnect(*token)
+	pri        = lib.PullRequestData(*githubrepo, *githubref)
 )
 
 // versionCheck will check the latest release of a github repository
