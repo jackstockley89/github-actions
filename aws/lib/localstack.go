@@ -1,4 +1,4 @@
-package localstack
+package lib
 
 import (
 	"context"
