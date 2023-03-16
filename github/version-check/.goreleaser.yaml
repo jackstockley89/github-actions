@@ -1,4 +1,4 @@
-project_name: close-pr
+project_name: version-check
 env:
   - CGO_ENABLED=0
   - DOCKERFILE=Dockerfile-goreleaser
@@ -6,18 +6,17 @@ before:
   hooks:
     - go mod download
 builds:
-  - dir: close-pr
-    binary: close-pr
+  - dir: version-check
+    binary: version-check
     goos:
       - linux
       - darwin
     goarch:
-      - "386"
       - amd64
-      - arm
       - arm64
     ldflags:
       - -s -w
+    
 changelog:
   sort: asc
   filters:
@@ -32,11 +31,12 @@ dockers:
   use: buildx
   build_flag_templates:
   - --build-arg=COMMAND={{ .ProjectName }}
+  - --build-arg=DIRECTORY=github
   - --platform=linux/amd64
   - --label=org.opencontainers.image.title={{ .ProjectName }}
   - --label=org.opencontainers.image.description={{ .ProjectName }}
-  - --label=org.opencontainers.image.url=https://github.com/jackstockley89/github-actions/{{ .ProjectName }}
-  - --label=org.opencontainers.image.source=https://github.com/jackstockley89/github-actions/{{ .ProjectName }}
+  - --label=org.opencontainers.image.url=ttps://github.com/jackstockley89/github-actions/github/{{ .ProjectName }}
+  - --label=org.opencontainers.image.source=ttps://github.com/jackstockley89/github-actions/github/{{ .ProjectName }}
   - --label=org.opencontainers.image.version={{ .Version }}
   - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
   - --label=org.opencontainers.image.revision={{ .FullCommit }}
@@ -47,11 +47,12 @@ dockers:
   use: buildx
   build_flag_templates:
   - --build-arg=COMMAND={{ .ProjectName }}
+  - --build-arg=DIRECTORY=github
   - --platform=linux/arm64
   - --label=org.opencontainers.image.title={{ .ProjectName }}
   - --label=org.opencontainers.image.description={{ .ProjectName }}
-  - --label=org.opencontainers.image.url=https://github.com/jackstockley89/github-actions/{{ .ProjectName }}
-  - --label=org.opencontainers.image.source=https://github.com/jackstockley89/github-actions/{{ .ProjectName }}
+  - --label=org.opencontainers.image.url=ttps://github.com/jackstockley89/github-actions/github/{{ .ProjectName }}
+  - --label=org.opencontainers.image.source=ttps://github.com/jackstockley89/github-actions/github/{{ .ProjectName }}
   - --label=org.opencontainers.image.version={{ .Version }}
   - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
   - --label=org.opencontainers.image.revision={{ .FullCommit }}

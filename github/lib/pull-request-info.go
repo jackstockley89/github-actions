@@ -1,4 +1,4 @@
-package pullrequestinfo
+package lib
 
 import (
 	"strconv"

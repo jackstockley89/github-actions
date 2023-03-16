@@ -11,11 +11,10 @@ ENV \
 
 WORKDIR /go/bin
 
-COPY ./github-api /go/bin/github-api
 COPY go.mod /go/bin
 COPY go.sum /go/bin
 RUN go mod download
-COPY ./${DIRECTORY} /go/bin
+COPY ${DIRECTORY}/${COMMAND} /go/bin
 
 RUN go build -ldflags "-s -w" -o ${COMMAND} . 
 

@@ -16,38 +16,41 @@
 
 ## Script Index
 --- 
-![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/assignee?label=assignee%20docker%20pulls%20&style=for-the-badge)
+
+### GITHUB
+
+![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/request-review?label=request-review%20docker%20pulls%20&style=for-the-badge)
 
 When called this action will assign a github user to a pull request if they are a Collaborator
 
-Directory Link: [assignee](https://github.com/jackstockley89/github-actions/tree/main/assignee)
+Directory Link: [request-review](ttps://github.com/jackstockley89/github-actions/github/tree/main/request-review)
 
-Workflow Example: [README](https://github.com/jackstockley89/github-actions/tree/main/assignee/README.md)
+Workflow Example: [README](ttps://github.com/jackstockley89/github-actions/github/tree/main/request-review/README.md)
 
 ---
 ![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/auth-check?label=auth-check%20docker%20pulls%20&style=for-the-badge)
 
 When called this action will compare the user who raised the pull request with the Collaborator list
 
-Directory Link: [auth-check](https://github.com/jackstockley89/github-actions/tree/main/auth-check)
+Directory Link: [auth-check](ttps://github.com/jackstockley89/github-actions/github/tree/main/auth-check)
 
-Workflow Example: [README](https://github.com/jackstockley89/github-actions/tree/main/auth-check/README.md)
+Workflow Example: [README](ttps://github.com/jackstockley89/github-actions/github/tree/main/auth-check/README.md)
 
 ---
 ![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/close-pr?label=close-pr%20docker%20pulls%20&style=for-the-badge)
 
 When called this action will close a pull request 
 
-Directory Link: [close-pr](https://github.com/jackstockley89/github-actions/tree/main/close-pr)
+Directory Link: [close-pr](ttps://github.com/jackstockley89/github-actions/github/tree/main/close-pr)
 
-Workflow Example: [README](https://github.com/jackstockley89/github-actions/tree/main/close-pr/README.md)
+Workflow Example: [README](ttps://github.com/jackstockley89/github-actions/github/tree/main/close-pr/README.md)
 
 ---
 ![Docker Pulls](https://img.shields.io/docker/pulls/jackstock8904/version-check?label=version-check%20docker%20pulls&style=for-the-badge)
 
 When called this action will check repository for the latest release tag
 
-Directory Link: [version-check](https://github.com/jackstockley89/github-actions/tree/main/version-check)
+Directory Link: [version-check](ttps://github.com/jackstockley89/github-actions/github/tree/main/version-check)
 
 ---
 
